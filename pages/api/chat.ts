@@ -66,7 +66,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   const payload: OpenAIPayload = {
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
     messages,
     temperature: 0.7,
     top_p: 1,
