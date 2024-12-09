@@ -1,5 +1,5 @@
 {
-  "name": "llmpeople",
+  "name": "3d-chatbot-power",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -52,5 +52,9 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   },
-  "packageManager": "yarn@4.0.1"
+  "engines": {
+    "node": "20.x",
+    "yarn": ">=1.22.0"
+  },
+  "packageManager": "yarn@4.5.3"
 }
