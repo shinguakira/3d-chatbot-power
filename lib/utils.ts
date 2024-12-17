@@ -1,5 +1,9 @@
 import { models } from "./constants";
 import { speechRecognitionLanguages } from "./speechRecognitionLanguages";
+import { staticChatVoiceList } from "@/constants/audio";
+import random from "lodash/random";
+import { handleStaticMessage } from "@/lib/chat/messageHandlingUtils";
+import { PlayStaticAudioFuncProps } from "./types";
 
 export function isWebview(): boolean {
   if (typeof window === undefined) {
@@ -47,4 +51,19 @@ export const isSpeechLangCodeValid = (languageCode: string | null): boolean => {
   }
 
   return true;
-}
+};
+
+export const playRandomStaticAudio = ({
+  mainStateDispatch,
+  currentSoundRef,
+  humanoidRef,
+}: PlayStaticAudioFuncProps): void => {
+  const index: number = random(0, staticChatVoiceList.length - 1);
+  handleStaticMessage(
+    staticChatVoiceList[index].text,
+    staticChatVoiceList[index].path,
+    mainStateDispatch,
+    currentSoundRef,
+    humanoidRef
+  );
+};

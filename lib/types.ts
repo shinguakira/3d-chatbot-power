@@ -18,7 +18,8 @@ export type VoiceInfo = {
 };
 
 export type Voice = keyof typeof voices;
-export type SpeechRecognitionLanguageName = typeof speechRecognitionLanguages[keyof typeof speechRecognitionLanguages];
+export type SpeechRecognitionLanguageName =
+  (typeof speechRecognitionLanguages)[keyof typeof speechRecognitionLanguages];
 export type SpeechRecognitionLanguageCode = keyof typeof speechRecognitionLanguages;
 
 export type CameraConfig = {
@@ -78,23 +79,23 @@ export type MainStateAction =
   | { type: "TOGGLE_SETTINGS_MODAL" }
   | { type: "SET_SETTINGS"; payload: SettingsType }
   | {
-    type: "HANDLE_SOUND";
-    payload: {
-      audio: HTMLAudioElement;
-      currentSoundRef: CurrentSoundRef;
-      humanoidRef: HumanoidRef;
-    };
-  }
+      type: "HANDLE_SOUND";
+      payload: {
+        audio: HTMLAudioElement;
+        currentSoundRef: CurrentSoundRef;
+        humanoidRef: HumanoidRef;
+      };
+    }
   | {
-    type: "UPDATE_CHAT_STATE";
-    payload: {
-      newMessage?: ChatMessage;
-      isLoadingMessage?: boolean;
-      abortController?: AbortController;
-      errorMessage?: string;
-      textAreaValue?: string;
+      type: "UPDATE_CHAT_STATE";
+      payload: {
+        newMessage?: ChatMessage;
+        isLoadingMessage?: boolean;
+        abortController?: AbortController;
+        errorMessage?: string;
+        textAreaValue?: string;
+      };
     };
-  };
 
 export type MainStateDispatch = Dispatch<MainStateAction>;
 
@@ -111,4 +112,15 @@ export type ChatState = {
   errorMessage: string;
   charCount: number;
   abortController?: AbortController;
+};
+
+export type StaticChatVoice = {
+  path: string; // path to audio file
+  text: string; // text to display in chat textarea
+};
+
+export type PlayStaticAudioFuncProps = {
+  mainStateDispatch: MainStateDispatch;
+  currentSoundRef: CurrentSoundRef;
+  humanoidRef: HumanoidRef;
 };

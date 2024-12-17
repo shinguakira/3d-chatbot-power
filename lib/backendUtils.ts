@@ -122,6 +122,8 @@ export async function synthesizeSpeechGoogle(text: string, voice: string): Promi
     voice: { languageCode: langCode, name: voice },
     audioConfig: {
       audioEncoding: "MP3",
+      pitch: -10.0,
+      speakingRate: 1.5,
     },
   };
 

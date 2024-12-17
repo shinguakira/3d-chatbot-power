@@ -76,6 +76,7 @@ export const voices = {
   "ca-ES-Standard-A": { gender: "FEMALE", provider: "Google Cloud" },
   "cmn-CN-Standard-A": { gender: "FEMALE", provider: "Google Cloud" },
   "cmn-CN-Standard-B": { gender: "MALE", provider: "Google Cloud" },
+  "ja-JP-Neural2-C": { gender: "MALE", provider: "Google Cloud" },
   alloy: { gender: "FEMALE", provider: "OpenAI" },
   echo: { gender: "MALE", provider: "OpenAI" },
   fable: { gender: "MALE", provider: "OpenAI" },
