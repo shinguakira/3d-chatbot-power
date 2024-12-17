@@ -135,6 +135,33 @@ const handleLLMResponse = async (
   });
 };
 
+export const handleStaticMessage = async (
+  message: string,
+  soundpath: string,
+  mainStateDispatch: MainStateDispatch,
+  currentSoundRef: CurrentSoundRef,
+  humanoidRef: HumanoidRef
+) => {
+  // Response has 2 parts: text and audio.
+  // 1. Here, we append the text to the chat's scroll view.
+  mainStateDispatch({
+    type: "UPDATE_CHAT_STATE",
+    payload: {
+      newMessage: { content: message, role: "assistant" },
+    },
+  });
+
+  // 2. And here, we play the audio.
+  // const audio = new Audio(`data:audio/mpeg;base64,${audioContent}`);
+  const audio = new Audio(soundpath);
+  audio.play();
+
+  mainStateDispatch({
+    type: "HANDLE_SOUND",
+    payload: { audio, currentSoundRef, humanoidRef },
+  });
+};
+
 export const sendPostRequestWithMultipleMessages = async (
   messagesToSendToBackend: ChatMessage[],
   mainStateDispatch: MainStateDispatch,

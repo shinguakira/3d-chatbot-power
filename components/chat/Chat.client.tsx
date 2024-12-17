@@ -1,8 +1,14 @@
 "use client";
 
-import { sendChatMessage } from "@/lib/chat/messageHandlingUtils";
+import { handleStaticMessage, sendChatMessage } from "@/lib/chat/messageHandlingUtils";
 import media from "@/lib/styleUtils";
-import { ChatMessage, ChatState, MainStateDispatch, SettingsType, SpeechRecognitionLanguageCode } from "@/lib/types";
+import {
+  ChatMessage,
+  ChatState,
+  MainStateDispatch,
+  SettingsType,
+  SpeechRecognitionLanguageCode,
+} from "@/lib/types";
 import { memo, useEffect, useRef } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import styled from "styled-components";
@@ -12,6 +18,9 @@ import { ChatButtonIcon } from "./ChatButtonIcon.client";
 import { ChatErrors } from "./ChatErrors.server";
 import { LLMMessage } from "./LLMMessage.client";
 import { UserMessage } from "./UserMessage.server";
+import random from "lodash/random";
+import { staticChatVoiceList } from "@/constants/audio";
+import { playRandomStaticAudio } from "@/lib/utils";
 type ChatMessagesProps = {
   messages: ChatMessage[];
 };
@@ -55,10 +64,30 @@ type ChatTextAreProps = {
 export const ChatTextArea = ({ mainStateDispatch, chatState, settings }: ChatTextAreProps) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const { currentSoundRef, humanoidRef } = useGameContext();
-  const { transcript, listening, resetTranscript, isMicrophoneAvailable, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    isMicrophoneAvailable,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
   const { isLoadingMessage } = chatState;
   const hasText = textAreaRef.current ? textAreaRef.current.value.length > 0 : false;
+
+  // this is for auto input to user input
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // play ramdom static audio
+      playRandomStaticAudio({
+        mainStateDispatch,
+        currentSoundRef,
+        humanoidRef,
+      });
+      // should exclude variable or changable on screen
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [mainStateDispatch, currentSoundRef, humanoidRef]);
 
   // The following useEffect is used to scroll to the bottom of the text area.
   useEffect(() => {
@@ -116,7 +145,7 @@ export const ChatTextArea = ({ mainStateDispatch, chatState, settings }: ChatTex
                 humanoidRef,
                 chatState,
                 settings
-              )
+              );
             } else if (!isMicrophoneAvailable) {
               window.alert("Microphone is not available :(");
             } else if (!browserSupportsSpeechRecognition) {
@@ -124,8 +153,7 @@ export const ChatTextArea = ({ mainStateDispatch, chatState, settings }: ChatTex
             } else {
               listen(settings.speechRecognitionLanguageCode);
             }
-          }
-          }
+          }}
         >
           <ChatButtonIcon isLoadingMessage={isLoadingMessage} hasText={hasText} />
         </ChatButton>
@@ -228,7 +256,6 @@ const ChatButtonWrapper = styled.div`
   position: absolute;
   right: 18px;
 `;
-
 
 const ChatButton = styled.button<{ disabled: boolean }>`
   cursor: pointer;
