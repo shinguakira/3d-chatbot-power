@@ -1,4 +1,10 @@
-import { DEFAULT_INITIAL_MESSAGE, DEFAULT_PROMPT, DEFAULT_SPEECH_RECOGNITION_LANGUAGE_CODE, DEFAULT_VOICE } from "./constants";
+import { goodMorning } from "@/constants/audio";
+import {
+  DEFAULT_INITIAL_MESSAGE,
+  DEFAULT_PROMPT,
+  DEFAULT_SPEECH_RECOGNITION_LANGUAGE_CODE,
+  DEFAULT_VOICE,
+} from "./constants";
 import { MainState, MainStateAction } from "./types";
 
 // Defining the localStorage key globally
@@ -91,7 +97,7 @@ export const mainStateReducer = (draft: MainState, action: MainStateAction): Mai
 
       if (lastMessageRole === "assistant" && newMessage?.role === "assistant") {
         if (newMessage !== undefined) {
-          draft.chatState.messages[draft.chatState.messages.length - 1] = newMessage;
+          draft.chatState.messages[draft.chatState.messages.length] = newMessage;
 
           // If a server message is done loading, set lastLLMResponse.
           if (!isLoadingMessage && !errorMessage) {
@@ -156,6 +162,9 @@ export const mainStateReducer = (draft: MainState, action: MainStateAction): Mai
         // If a new initial message is set, update the chat history.
         // Replace first message with the new initial message.
         draft.chatState.messages[0].content = settings.initialMessage;
+        // TODO should define as default audio and refer the varibale
+        const audio = new Audio(goodMorning.path);
+        audio.play();
       }
 
       draft.settings = settings;
