@@ -12,8 +12,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>llmpeople</title>
-        <meta name="description" content="Interact with 3d models powered by llms" />
+        <title>3d Chat Bot Power</title>
+        <meta name="description" content="3d Chat Bot for Traning " />
         {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
       <GameContextProvider>
